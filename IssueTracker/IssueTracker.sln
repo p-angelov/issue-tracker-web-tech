@@ -1,6 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IssueTracker", "IssueTracker\IssueTracker.csproj", "{7AE3294A-A864-4D3E-9852-5D3F6F10E3A0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IssueTracker.WebApi", "IssueTracker.WebApi\IssueTracker.WebApi.csproj", "{7AE3294A-A864-4D3E-9852-5D3F6F10E3A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IssueTracker.Infrastructure", "IssueTracker.Infrastructure\IssueTracker.Infrastructure.csproj", "{050307F7-F62C-4461-A86C-482C499CEC5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IssueTracker.Core", "IssueTracker.Core\IssueTracker.Core.csproj", "{CE121C56-7AEC-4952-BEA9-684E32DB7A31}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +16,13 @@ Global
 		{7AE3294A-A864-4D3E-9852-5D3F6F10E3A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7AE3294A-A864-4D3E-9852-5D3F6F10E3A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7AE3294A-A864-4D3E-9852-5D3F6F10E3A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{050307F7-F62C-4461-A86C-482C499CEC5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{050307F7-F62C-4461-A86C-482C499CEC5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{050307F7-F62C-4461-A86C-482C499CEC5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{050307F7-F62C-4461-A86C-482C499CEC5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE121C56-7AEC-4952-BEA9-684E32DB7A31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE121C56-7AEC-4952-BEA9-684E32DB7A31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE121C56-7AEC-4952-BEA9-684E32DB7A31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE121C56-7AEC-4952-BEA9-684E32DB7A31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
