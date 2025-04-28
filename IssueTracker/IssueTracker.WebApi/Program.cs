@@ -40,11 +40,12 @@ public class Program
         });
         
         builder.Services.AddDbContext<IssueTrackerDbContext>(options => 
-            options.UseInMemoryDatabase("TicketsDb"));
+            options.UseInMemoryDatabase("IssueTrackerDb"));
 
         builder.Services.AddScoped<ITicketsRepository, TicketsRepository>();
         builder.Services.AddScoped<TicketsService>();
-        builder.Services.AddScoped<IAuthService, AuthService>();
+        builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+        builder.Services.AddScoped<AuthService>();
 
         builder.Services.AddControllers();
 

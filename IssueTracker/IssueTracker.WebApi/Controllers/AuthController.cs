@@ -1,5 +1,5 @@
 ﻿using IssueTracker.Core.DTOs;
-using IssueTracker.Core.Interfaces;
+using IssueTracker.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,10 +7,11 @@ namespace IssueTracker.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AuthController(IAuthService authService) : ControllerBase
+public class AuthController(AuthService authService) : ControllerBase
 {
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginRequest request)
+    public async Task<IActionResult> Login(
+        [FromBody] LoginRequest request)
     {
         AuthResponse result = await authService.LoginAsync(request);
         
@@ -23,7 +24,8 @@ public class AuthController(IAuthService authService) : ControllerBase
     }
     
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+    public async Task<IActionResult> Register(
+        [FromBody] RegisterRequest request)
     {
         AuthResponse result = await authService.RegisterAsync(request);
         

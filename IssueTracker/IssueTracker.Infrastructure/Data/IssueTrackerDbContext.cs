@@ -6,4 +6,5 @@ namespace IssueTracker.Infrastructure.Data;
 public class IssueTrackerDbContext(DbContextOptions options) : DbContext(options)
 {
     public DbSet<Ticket> Tickets => Set<Ticket>();
+    public DbSet<User> Users => Set<User>();
 }

@@ -10,30 +10,38 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace IssueTracker.Core.Services;
 
-public class AuthService : IAuthService
+public class AuthService
 {
     private readonly JwtSettings _jwtSettings;
-    private readonly List<User> _users = new(); // Temporary in-memory store; replace with your database
+    private readonly IUsersRepository _usersRepository;
 
-    public AuthService(IOptions<JwtSettings> jwtSettings)
+    public AuthService(IOptions<JwtSettings> jwtSettings, IUsersRepository usersRepository)
     {
         _jwtSettings = jwtSettings.Value;
+        _usersRepository = usersRepository;
         
-        // Add a default admin user for testing
-        _users.Add(new User
+        // Seed default admin user if not exists
+        SeedDefaultAdminUser().GetAwaiter().GetResult();
+    }
+
+    private async Task SeedDefaultAdminUser()
+    {
+        var existingAdmin = await _usersRepository.GetByUsername("admin");
+        if (existingAdmin == null)
         {
-            Id = Guid.NewGuid().GetHashCode(),
-            Username = "admin",
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin123!"),
-            Email = "admin@example.com",
-            Role = "Admin"
-        });
+            await _usersRepository.Add(new User
+            {
+                Username = "admin",
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin123!"),
+                Email = "admin@example.com",
+                Role = "Admin"
+            });
+        }
     }
 
     public async Task<AuthResponse> LoginAsync(LoginRequest request)
     {
-        // In a real implementation, this would be a database lookup
-        User? user = _users.FirstOrDefault(u => u.Username == request.Username);
+        User? user = await _usersRepository.GetByUsername(request.Username);
 
         if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
         {
@@ -50,7 +58,8 @@ public class AuthService : IAuthService
     public async Task<AuthResponse> RegisterAsync(RegisterRequest request)
     {
         // Check if user already exists
-        if (_users.Any(u => u.Username == request.Username || u.Email == request.Email))
+        if (await _usersRepository.GetByUsername(request.Username) != null || 
+            await _usersRepository.GetByEmail(request.Email) != null)
         {
             return new AuthResponse(false, string.Empty, string.Empty, string.Empty, string.Empty, DateTime.MinValue);
         }
@@ -58,14 +67,13 @@ public class AuthService : IAuthService
         // Create new user
         User user = new User
         {
-            Id = Guid.NewGuid().GetHashCode(),
             Username = request.Username,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
             Email = request.Email,
             Role = request.Role ?? "User" // Default to User role if not specified
         };
 
-        _users.Add(user);
+        await _usersRepository.Add(user);
 
         // Generate JWT token
         string token = GenerateJwtToken(user);
