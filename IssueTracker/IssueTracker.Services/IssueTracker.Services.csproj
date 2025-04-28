@@ -6,4 +6,14 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+      <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.3.1" />
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.3.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\IssueTracker.Core\IssueTracker.Core.csproj" />
+    </ItemGroup>
+
 </Project>
