@@ -3,6 +3,7 @@ using IssueTracker.Core.Interfaces;
 using IssueTracker.Core.Services;
 using IssueTracker.Core.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace IssueTracker;
