@@ -13,6 +13,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\IssueTracker.Core\IssueTracker.Core.csproj" />
+      <ProjectReference Include="..\IssueTracker.Infrastructure\IssueTracker.Infrastructure.csproj" />
       <ProjectReference Include="..\IssueTracker.Services\IssueTracker.Services.csproj" />
     </ItemGroup>
 

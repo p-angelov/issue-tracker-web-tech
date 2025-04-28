@@ -22,7 +22,7 @@ public class AuthService : IAuthService
         // Add a default admin user for testing
         _users.Add(new User
         {
-            Id = Guid.NewGuid(),
+            Id = Guid.NewGuid().GetHashCode(),
             Username = "admin",
             PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin123!"),
             Email = "admin@example.com",
@@ -58,7 +58,7 @@ public class AuthService : IAuthService
         // Create new user
         var user = new User
         {
-            Id = Guid.NewGuid(),
+            Id = Guid.NewGuid().GetHashCode(),
             Username = request.Username,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
             Email = request.Email,

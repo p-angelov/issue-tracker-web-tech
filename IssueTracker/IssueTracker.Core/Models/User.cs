@@ -4,7 +4,7 @@ namespace IssueTracker.Core.Models;
 
 public class User
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     
     [Required]
     [MaxLength(50)]

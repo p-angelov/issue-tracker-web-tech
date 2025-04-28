@@ -6,7 +6,7 @@ public interface ITicketsRepository
 {
     Task<List<Ticket>> GetAll();
 
-    Task<List<Ticket>> GetById(int id);
+    Task<Ticket?> GetById(int id);
 
     Task Add(Ticket ticket);
 

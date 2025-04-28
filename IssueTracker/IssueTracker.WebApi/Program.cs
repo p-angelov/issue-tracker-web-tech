@@ -2,6 +2,8 @@ using System.Text;
 using IssueTracker.Core.Interfaces;
 using IssueTracker.Core.Services;
 using IssueTracker.Core.Settings;
+using IssueTracker.Infrastructure.Data;
+using IssueTracker.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -40,7 +42,7 @@ public class Program
         });
         
         // Register DbContext with InMemory database
-        builder.Services.AddDbContext<AppDbContext>(options => 
+        builder.Services.AddDbContext<IssueTrackerDbContext>(options => 
             options.UseInMemoryDatabase("TicketsDb"));
 
         // Register repositories and services
