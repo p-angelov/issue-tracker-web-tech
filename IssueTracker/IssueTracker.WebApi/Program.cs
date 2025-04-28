@@ -37,7 +37,15 @@ public class Program
                 ClockSkew = TimeSpan.Zero
             };
         });
+        
+        // Register DbContext with InMemory database
+        builder.Services.AddDbContext<AppDbContext>(options => 
+            options.UseInMemoryDatabase("TicketsDb"));
 
+        // Register repositories and services
+        builder.Services.AddScoped<ITicketsRepository, TicketsRepository>();
+        builder.Services.AddScoped<TicketsService>();
+        
         // Register services
         builder.Services.AddScoped<IAuthService, AuthService>();
 
