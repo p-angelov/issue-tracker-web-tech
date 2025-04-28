@@ -7,19 +7,12 @@ namespace IssueTracker.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AuthController : ControllerBase
+public class AuthController(IAuthService authService) : ControllerBase
 {
-    private readonly IAuthService _authService;
-    
-    public AuthController(IAuthService authService)
-    {
-        _authService = authService;
-    }
-    
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-        var result = await _authService.LoginAsync(request);
+        AuthResponse result = await authService.LoginAsync(request);
         
         if (result.Success)
         {
@@ -32,7 +25,7 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
-        var result = await _authService.RegisterAsync(request);
+        AuthResponse result = await authService.RegisterAsync(request);
         
         if (result.Success)
         {
@@ -44,15 +37,9 @@ public class AuthController : ControllerBase
     
     [HttpGet("test-auth")]
     [Authorize]
-    public IActionResult TestAuth()
-    {
-        return Ok(new { message = "You are authorized", user = User.Identity?.Name });
-    }
-    
+    public IActionResult TestAuth() => Ok(new { message = "You are authorized", user = User.Identity?.Name });
+
     [HttpGet("admin-only")]
     [Authorize(Roles = "Admin")]
-    public IActionResult AdminOnly()
-    {
-        return Ok(new { message = "You are an admin" });
-    }
+    public IActionResult AdminOnly() => Ok(new { message = "You are an admin" });
 }

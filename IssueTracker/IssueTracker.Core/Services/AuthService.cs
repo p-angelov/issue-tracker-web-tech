@@ -33,7 +33,7 @@ public class AuthService : IAuthService
     public async Task<AuthResponse> LoginAsync(LoginRequest request)
     {
         // In a real implementation, this would be a database lookup
-        var user = _users.FirstOrDefault(u => u.Username == request.Username);
+        User? user = _users.FirstOrDefault(u => u.Username == request.Username);
 
         if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
         {
@@ -41,8 +41,8 @@ public class AuthService : IAuthService
         }
 
         // Generate JWT token
-        var token = GenerateJwtToken(user);
-        var expiration = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes);
+        string token = GenerateJwtToken(user);
+        DateTime expiration = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes);
 
         return new AuthResponse(true, token, user.Username, user.Email, user.Role, expiration);
     }
@@ -56,7 +56,7 @@ public class AuthService : IAuthService
         }
 
         // Create new user
-        var user = new User
+        User user = new User
         {
             Id = Guid.NewGuid().GetHashCode(),
             Username = request.Username,
@@ -68,26 +68,26 @@ public class AuthService : IAuthService
         _users.Add(user);
 
         // Generate JWT token
-        var token = GenerateJwtToken(user);
-        var expiration = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes);
+        string token = GenerateJwtToken(user);
+        DateTime expiration = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes);
 
         return new AuthResponse(true, token, user.Username, user.Email, user.Role, expiration);
     }
 
     private string GenerateJwtToken(User user)
     {
-        var key = Encoding.ASCII.GetBytes(_jwtSettings.Key);
-        var tokenHandler = new JwtSecurityTokenHandler();
+        byte[] key = Encoding.ASCII.GetBytes(_jwtSettings.Key);
+        JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
         
-        var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Name, user.Username),
-            new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Role, user.Role),
-            new Claim("UserId", user.Id.ToString())
-        };
+        List<Claim> claims =
+        [
+            new(ClaimTypes.Name, user.Username),
+            new(ClaimTypes.Email, user.Email),
+            new(ClaimTypes.Role, user.Role),
+            new("UserId", user.Id.ToString())
+        ];
 
-        var tokenDescriptor = new SecurityTokenDescriptor
+        SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
             Expires = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes),
@@ -98,7 +98,7 @@ public class AuthService : IAuthService
                 SecurityAlgorithms.HmacSha256Signature)
         };
 
-        var token = tokenHandler.CreateToken(tokenDescriptor);
+        SecurityToken? token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
     }
 } 

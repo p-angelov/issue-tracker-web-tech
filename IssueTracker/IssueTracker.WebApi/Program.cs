@@ -16,11 +16,9 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Configure JWT settings
         builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
         var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
 
-        // Add JWT authentication
         builder.Services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -41,21 +39,15 @@ public class Program
             };
         });
         
-        // Register DbContext with InMemory database
         builder.Services.AddDbContext<IssueTrackerDbContext>(options => 
             options.UseInMemoryDatabase("TicketsDb"));
 
-        // Register repositories and services
         builder.Services.AddScoped<ITicketsRepository, TicketsRepository>();
         builder.Services.AddScoped<TicketsService>();
-        
-        // Register services
         builder.Services.AddScoped<IAuthService, AuthService>();
 
-        // Add controllers
         builder.Services.AddControllers();
 
-        // Enable CORS
         builder.Services.AddCors(options =>
         {
             options.AddPolicy("AllowSpecificOrigin",
