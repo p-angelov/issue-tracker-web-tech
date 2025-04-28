@@ -1,31 +1,32 @@
+using IssueTracker.Core.Interfaces;
 using IssueTracker.Core.Models;
 
 namespace IssueTracker.Core.Services;
 
-public class TicketsService
+public class TicketsService(ITicketsRepository ticketsRepository)
 {
     public async Task<List<Ticket>> GetAll()
     {
-        throw new NotImplementedException();
+        return await ticketsRepository.GetAll();
     }
 
-    public async Task<List<Ticket>> GetById(int id)
+    public async Task<Ticket?> GetById(int id)
     {
-        throw new NotImplementedException();
+        return await ticketsRepository.GetById(id);
     }
 
     public async Task Add(Ticket ticket)
     {
-        throw new NotImplementedException();
+        await ticketsRepository.Add(ticket);
     }
 
     public async Task Update(Ticket ticket)
     {
-        throw new NotImplementedException();
+        await ticketsRepository.Update(ticket);
     }
 
     public async Task Delete(int id)
     {
-        throw new NotImplementedException();
+        await ticketsRepository.Delete(id);
     }
 }
